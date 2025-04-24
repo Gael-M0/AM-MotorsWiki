@@ -18,6 +18,7 @@ import 'screens/favoritos_screen.dart';
 import 'package:gaelmv/proy/modelsev/event_model.dart'; // Importar correctamente el modelo de eventos
 import 'package:gaelmv/proy/screens/AddEventScreen.dart'; // Importar correctamente la pantalla de eventos
 import 'package:gaelmv/proy/screens/EventListScreen.dart'; // Importar correctamente la pantalla de eventos
+import 'screens/bluetooth_screen.dart'; // Importar correctamente la pantalla de Bluetooth
 
 late final Isar isar;
 
@@ -124,6 +125,7 @@ class MyApp extends StatelessWidget {
           '/ubicacion': (context) => UbicacionScreen(), // Agregar UbicacionScreen a las rutas
           '/eventos': (context) => EventListScreen(), // Agregar EventListScreen a las rutas
           '/addEvent': (context) => AddEventScreen(), // Agregar AddEventScreen a las rutas
+          '/bluetooth': (context) => BluetoothScreen(),
         },
       ),
     );

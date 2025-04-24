@@ -5,8 +5,6 @@ import 'dart:io';
 import '../modelsp1/vehiculo.dart';
 import '../providers/favoritos_provider.dart';
 
-
-
 class VehiculosScreen extends StatelessWidget {
   final List<String> vehiculosBase = ['LA Ferrari', 'Lamborghini Aventador', 'BMW SP'];
 
@@ -36,6 +34,10 @@ class VehiculosScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.person, color: Colors.white),
                 onPressed: () => Navigator.pushNamed(context, '/registro'),
+              ),
+              IconButton(
+                icon: const Icon(Icons.bluetooth, color: Colors.blue),
+                onPressed: () => Navigator.pushNamed(context, '/bluetooth'), // Botón para Bluetooth
               ),
             ],
           ),
