@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:gaelmv/proy/screens/camara_screen.dart';
 import 'package:gaelmv/proy/screens/ubicacion_screen.dart'; // Importar UbicacionScreen
 import 'package:isar/isar.dart';
@@ -61,6 +62,21 @@ Future<void> inicializarVehiculos(Isar isar) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializar Awesome Notifications
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Notificaciones Simples',
+        channelDescription: 'Notificaciones para bienvenida y tareas',
+        defaultColor: const Color(0xFF9D50DD),
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+      )
+    ],
+  );
 
   // Inicializar Hive
   await Hive.initFlutter();

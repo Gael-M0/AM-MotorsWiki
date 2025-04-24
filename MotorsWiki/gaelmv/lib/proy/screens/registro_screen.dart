@@ -3,6 +3,8 @@ import 'package:isar/isar.dart';
 import '../models/usuario.dart';
 import 'package:provider/provider.dart';
 import '../providers/favoritos_provider.dart';
+import 'package:awesome_notifications/awesome_notifications.dart'; // Reemplazar flutter_local_notifications por awesome_notifications
+import 'package:gaelmv/proy/maincar.dart';
 
 class RegistroScreen extends StatelessWidget {
   final _formRegistroKey = GlobalKey<FormState>();
@@ -11,6 +13,18 @@ class RegistroScreen extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _loginUsernameController = TextEditingController();
   final TextEditingController _loginPasswordController = TextEditingController();
+
+  void _showLoginNotification(String usuario) async {
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 1,
+        channelKey: 'basic_channel',
+        title: 'Inicio exitoso',
+        body: 'Bienvenido, $usuario',
+        notificationLayout: NotificationLayout.Default,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +133,7 @@ class RegistroScreen extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Inicio de sesión exitoso')),
                           );
+                          _showLoginNotification(usuario.username);
                           Navigator.pushReplacementNamed(context, '/'); // Redirigir a InicioScreen
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
