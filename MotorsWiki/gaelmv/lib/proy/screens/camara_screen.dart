@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:isar/isar.dart';
+import 'package:awesome_notifications/awesome_notifications.dart'; // Importar AwesomeNotifications
 import '../modelsp1/vehiculo.dart';
 import '../providers/favoritos_provider.dart';
 
@@ -48,6 +49,17 @@ class _CamaraScreenState extends State<CamaraScreen> {
     await isar.writeTxn(() async {
       await isar.vehiculos.put(nuevoVehiculo);
     });
+
+    // Mostrar notificación de éxito
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 2, // ID único para esta notificación
+        channelKey: 'basic_channel',
+        title: 'Vehículo agregado',
+        body: 'Vehículo "${_nombreController.text}" agregado con éxito.',
+        notificationLayout: NotificationLayout.Default,
+      ),
+    );
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Vehículo agregado exitosamente')),
