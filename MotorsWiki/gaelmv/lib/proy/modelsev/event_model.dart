@@ -19,11 +19,19 @@ class Event {
   @HiveField(4)
   double? longitude;
 
+  @HiveField(5)
+  DateTime? startTime; // Nueva hora de inicio
+
+  @HiveField(6)
+  DateTime? endTime; // Nueva hora de fin
+
   Event({
     required this.title,
     required this.description,
     this.imagePath,
     this.latitude,
     this.longitude,
+    this.startTime,
+    this.endTime,
   });
 }

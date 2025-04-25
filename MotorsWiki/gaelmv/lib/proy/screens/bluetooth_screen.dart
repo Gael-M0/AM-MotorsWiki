@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:isar/isar.dart';
+import '../modelBT/bluetooth_data.dart'; // Importación actualizada
+import 'package:path_provider/path_provider.dart';
 
 class BluetoothScreen extends StatefulWidget {
   @override
@@ -10,15 +13,24 @@ class BluetoothScreen extends StatefulWidget {
 class _BluetoothScreenState extends State<BluetoothScreen> {
   final List<BluetoothDevice> _devicesList = [];
   BluetoothDevice? _connectedDevice;
+  late Isar _isar; // Instancia de Isar
 
   @override
   void initState() {
     super.initState();
+    _initializeIsar();
     _checkPermissionsAndStartScan();
   }
 
+  Future<void> _initializeIsar() async {
+    final dir = await getApplicationDocumentsDirectory();
+    _isar = await Isar.open(
+      [BluetoothDataSchema], // Registrar el esquema de BluetoothData
+      directory: dir.path,
+    );
+  }
+
   Future<void> _checkPermissionsAndStartScan() async {
-    // Solicitar permisos de Bluetooth y ubicación
     if (await Permission.bluetoothScan.request().isGranted &&
         await Permission.bluetoothConnect.request().isGranted &&
         await Permission.locationWhenInUse.request().isGranted) {
@@ -50,7 +62,36 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
         _connectedDevice = device;
       });
 
-      // Aquí puedes manejar la conexión al dispositivo Bluetooth
+      // Descubrir servicios y características del dispositivo
+      final services = await device.discoverServices();
+      for (var service in services) {
+        for (var characteristic in service.characteristics) {
+          if (characteristic.properties.notify) {
+            // Configurar notificaciones para recibir datos
+            await characteristic.setNotifyValue(true);
+            characteristic.value.listen((value) {
+              final receivedData = String.fromCharCodes(value);
+
+              // Guardar los datos en la base de datos Isar
+              final bluetoothData = BluetoothData()
+                ..deviceName = device.name.isNotEmpty ? device.name : "Dispositivo sin nombre"
+                ..deviceAddress = device.id.toString()
+                ..receivedData = receivedData
+                ..timestamp = DateTime.now();
+
+              _isar.writeTxn(() async {
+                await _isar.bluetoothDatas.put(bluetoothData);
+              });
+
+              // Mostrar los datos recibidos en la interfaz
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Datos recibidos: $receivedData')),
+              );
+            });
+          }
+        }
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Conectado a ${device.name}')),
       );
@@ -107,6 +148,32 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
                           );
                         },
                         child: const Text('Desconectar'),
+                      ),
+                      const SizedBox(height: 20),
+                      Expanded(
+                        child: FutureBuilder<List<BluetoothData>>(
+                          future: _isar.bluetoothDatas.where().findAll(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+
+                            final data = snapshot.data!;
+                            return ListView.builder(
+                              itemCount: data.length,
+                              itemBuilder: (context, index) {
+                                final bluetoothData = data[index];
+                                return ListTile(
+                                  title: Text(bluetoothData.deviceName),
+                                  subtitle: Text(
+                                    'Datos: ${bluetoothData.receivedData}\n'
+                                    'Fecha: ${bluetoothData.timestamp}',
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

@@ -152,7 +152,7 @@ class VehiculosScreen extends StatelessWidget {
                       Navigator.pushNamed(context, '/eventos'); // Cambiar la ruta a UbicacionScreen
                     },
                     icon: const Icon(Icons.event, color: Colors.purple),
-                    label: const Text('Ubicacion'),
+                    label: const Text('Eventos'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.purple,

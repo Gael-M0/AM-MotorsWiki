@@ -37,7 +37,11 @@ class EventListScreen extends StatelessWidget {
                 child: ListTile(
                   leading: leadingWidget,
                   title: Text(event.title),
-                  subtitle: Text(event.description),
+                  subtitle: Text(
+                    '${event.description}\n'
+                    'Inicio: ${event.startTime?.hour}:${event.startTime?.minute}\n'
+                    'Fin: ${event.endTime?.hour}:${event.endTime?.minute}',
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

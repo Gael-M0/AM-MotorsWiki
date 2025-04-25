@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:gaelmv/proy/screens/camara_screen.dart';
-import 'package:gaelmv/proy/screens/ubicacion_screen.dart'; // Importar UbicacionScreen
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -122,7 +121,6 @@ class MyApp extends StatelessWidget {
           '/descripcion': (context) => DescripcionScreen(),
           '/registro': (context) => RegistroScreen(),
           '/camara': (context) => CamaraScreen(),
-          '/ubicacion': (context) => UbicacionScreen(), // Agregar UbicacionScreen a las rutas
           '/eventos': (context) => EventListScreen(), // Agregar EventListScreen a las rutas
           '/addEvent': (context) => AddEventScreen(), // Agregar AddEventScreen a las rutas
           '/bluetooth': (context) => BluetoothScreen(),
