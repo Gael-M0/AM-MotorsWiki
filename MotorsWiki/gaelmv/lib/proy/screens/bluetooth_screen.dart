@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:isar/isar.dart';
-import '../modelBT/bluetooth_data.dart'; // Importación actualizada
-import 'package:path_provider/path_provider.dart';
+import '../modelBT/bluetooth_data.dart';
+import '../maincar.dart'; // Importa la instancia global de Isar
 
 class BluetoothScreen extends StatefulWidget {
   @override
@@ -13,21 +13,11 @@ class BluetoothScreen extends StatefulWidget {
 class _BluetoothScreenState extends State<BluetoothScreen> {
   final List<BluetoothDevice> _devicesList = [];
   BluetoothDevice? _connectedDevice;
-  late Isar _isar; // Instancia de Isar
 
   @override
   void initState() {
     super.initState();
-    _initializeIsar();
     _checkPermissionsAndStartScan();
-  }
-
-  Future<void> _initializeIsar() async {
-    final dir = await getApplicationDocumentsDirectory();
-    _isar = await Isar.open(
-      [BluetoothDataSchema], // Registrar el esquema de BluetoothData
-      directory: dir.path,
-    );
   }
 
   Future<void> _checkPermissionsAndStartScan() async {
@@ -58,6 +48,8 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
   Future<void> _connectToDevice(BluetoothDevice device) async {
     try {
       await device.connect();
+      if (!mounted) return; // Verifica si el widget sigue montado
+
       setState(() {
         _connectedDevice = device;
       });
@@ -79,26 +71,32 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
                 ..receivedData = receivedData
                 ..timestamp = DateTime.now();
 
-              _isar.writeTxn(() async {
-                await _isar.bluetoothDatas.put(bluetoothData);
+              isar.writeTxn(() async {
+                await isar.bluetoothDatas.put(bluetoothData);
               });
 
-              // Mostrar los datos recibidos en la interfaz
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Datos recibidos: $receivedData')),
-              );
+              if (mounted) {
+                // Mostrar los datos recibidos en la interfaz
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Datos recibidos: $receivedData')),
+                );
+              }
             });
           }
         }
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Conectado a ${device.name}')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Conectado a ${device.name}')),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al conectar con el dispositivo: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al conectar con el dispositivo: $e')),
+        );
+      }
     }
   }
 
@@ -152,7 +150,7 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
                       const SizedBox(height: 20),
                       Expanded(
                         child: FutureBuilder<List<BluetoothData>>(
-                          future: _isar.bluetoothDatas.where().findAll(),
+                          future: isar.bluetoothDatas.where().findAll(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return const Center(child: CircularProgressIndicator());

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:gaelmv/proy/modelBT/bluetooth_data.dart';
 import 'package:gaelmv/proy/screens/camara_screen.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,7 +20,7 @@ import 'package:gaelmv/proy/screens/AddEventScreen.dart'; // Importar correctame
 import 'package:gaelmv/proy/screens/EventListScreen.dart'; // Importar correctamente la pantalla de eventos
 import 'screens/bluetooth_screen.dart'; // Importar correctamente la pantalla de Bluetooth
 
-late final Isar isar;
+late final Isar isar; // Instancia global
 
 Future<void> inicializarVehiculos(Isar isar) async {
   final vehiculos = [
@@ -92,7 +93,7 @@ void main() async {
   // Inicializar Isar
   final dir = await getApplicationDocumentsDirectory();
   isar = await Isar.open(
-    [UsuarioSchema, VehiculoSchema],
+    [UsuarioSchema, VehiculoSchema, BluetoothDataSchema], // Agrega todos los esquemas necesarios
     directory: dir.path,
   );
 
