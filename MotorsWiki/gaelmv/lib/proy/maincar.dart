@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:gaelmv/proy/modelBT/bluetooth_data.dart';
-import 'package:gaelmv/proy/screens/camara_screen.dart';
+import '../proy/modelBT/bluetooth_data.dart';
+import '../proy/screens/camara_screen.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -15,9 +15,9 @@ import 'screens/vehiculos_screen.dart';
 import 'screens/descripcion_screen.dart';
 import 'screens/registro_screen.dart';
 import 'screens/favoritos_screen.dart';
-import 'package:gaelmv/proy/modelsev/event_model.dart'; // Importar correctamente el modelo de eventos
-import 'package:gaelmv/proy/screens/AddEventScreen.dart'; // Importar correctamente la pantalla de eventos
-import 'package:gaelmv/proy/screens/EventListScreen.dart'; // Importar correctamente la pantalla de eventos
+import '../proy/modelsev/event_model.dart'; // Importar correctamente el modelo de eventos
+import '../proy/screens/AddEventScreen.dart'; // Importar correctamente la pantalla de eventos
+import '../proy/screens/EventListScreen.dart'; // Importar correctamente la pantalla de eventos
 import 'screens/bluetooth_screen.dart'; // Importar correctamente la pantalla de Bluetooth
 
 late final Isar isar; // Instancia global

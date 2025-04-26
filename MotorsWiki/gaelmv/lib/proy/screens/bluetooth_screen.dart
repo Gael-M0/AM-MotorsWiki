@@ -3,7 +3,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:isar/isar.dart';
 import '../modelBT/bluetooth_data.dart';
-import '../maincar.dart'; // Importa la instancia global de Isar
+import '../maincar.dart';
 
 class BluetoothScreen extends StatefulWidget {
   @override
@@ -105,7 +105,7 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bluetooth'),
-        backgroundColor: Colors.black,
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       body: Column(
         children: [
