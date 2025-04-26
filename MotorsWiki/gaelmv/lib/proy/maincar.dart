@@ -66,15 +66,15 @@ void main() async {
 
   // Inicializar Awesome Notifications
   AwesomeNotifications().initialize(
-    null,
+    'resource://drawable/cr',
     [
       NotificationChannel(
         channelKey: 'basic_channel',
-        channelName: 'Notificaciones Simples',
-        channelDescription: 'Notificaciones para bienvenida y tareas',
-        defaultColor: const Color(0xFF9D50DD),
+        channelName: 'Notificaciones Personalizadas',
+        channelDescription: 'Canal para notificaciones personalizadas',
+        defaultColor: const Color.fromARGB(255, 221, 80, 80), // Color predeterminado
+        ledColor: const Color.fromARGB(255, 249, 249, 249),
         importance: NotificationImportance.High,
-        channelShowBadge: true,
       )
     ],
   );
