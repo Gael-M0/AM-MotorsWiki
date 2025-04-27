@@ -1,7 +1,11 @@
+import 'package:MotorsWiki/proy/modelsp1/vehiculo.dart';
+import 'package:MotorsWiki/proy/providers/favoritos_provider.dart';
+import 'package:MotorsWiki/proy/screens/bluetooth_new_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:isar/isar.dart';
+import 'package:provider/provider.dart';
 import '../modelBT/bluetooth_data.dart';
 import '../main.dart';
 
@@ -115,15 +119,23 @@ class _BluetoothScreenState extends State<BluetoothScreen> {
                     itemCount: _devicesList.length,
                     itemBuilder: (context, index) {
                       final device = _devicesList[index];
-                      final deviceName = device.name.isNotEmpty
-                          ? device.name
-                          : 'Dispositivo sin nombre';
-                      final deviceAddress = device.id.toString();
-
                       return ListTile(
-                        title: Text(deviceName),
-                        subtitle: Text('Dirección MAC: $deviceAddress'),
-                        onTap: () => _connectToDevice(device),
+                        title: Text(device.name.isNotEmpty ? device.name : 'Dispositivo sin nombre'),
+                        subtitle: Text(device.id.toString()),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.add, color: Colors.green), // Botón con símbolo "+"
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BluetoothNewScreen(
+                                  deviceName: device.name.isNotEmpty ? device.name : 'Dispositivo sin nombre',
+                                  deviceId: device.id.toString(),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       );
                     },
                   ),
