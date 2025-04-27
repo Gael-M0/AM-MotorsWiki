@@ -4,7 +4,7 @@ import '../models/usuario.dart';
 import 'package:provider/provider.dart';
 import '../providers/favoritos_provider.dart';
 import 'package:awesome_notifications/awesome_notifications.dart'; // Reemplazar flutter_local_notifications por awesome_notifications
-import '../maincar.dart';
+import '../main.dart';
 
 class RegistroScreen extends StatelessWidget {
   final _formRegistroKey = GlobalKey<FormState>();

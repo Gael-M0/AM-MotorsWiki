@@ -3,7 +3,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:isar/isar.dart';
 import '../modelBT/bluetooth_data.dart';
-import '../maincar.dart';
+import '../main.dart';
 
 class BluetoothScreen extends StatefulWidget {
   @override
