@@ -1,4 +1,4 @@
-package com.example.gaelmv
+package com.motorswiki.app
 
 import io.flutter.embedding.android.FlutterActivity
 
