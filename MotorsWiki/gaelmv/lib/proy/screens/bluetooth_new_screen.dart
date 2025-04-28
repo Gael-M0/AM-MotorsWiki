@@ -21,11 +21,15 @@ class _BluetoothNewScreenState extends State<BluetoothNewScreen> {
   final TextEditingController _descripcionController = TextEditingController();
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera); // Usar cámara
+
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
       });
+    } else {
+      print("No se tomó ninguna foto.");
     }
   }
 
@@ -85,11 +89,12 @@ class _BluetoothNewScreenState extends State<BluetoothNewScreen> {
             const SizedBox(height: 20),
             _selectedImage != null
                 ? Image.file(_selectedImage!, width: 100, height: 100, fit: BoxFit.cover)
-                : const Text('No se ha seleccionado ninguna imagen'),
+                : const Text('No se ha tomado ninguna foto'),
             const SizedBox(height: 10),
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: _pickImage,
-              child: const Text('Seleccionar Imagen'),
+              icon: const Icon(Icons.camera_alt),
+              label: const Text('Tomar Foto'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
